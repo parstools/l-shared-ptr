@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+
+cmake-build-release/
+cmake-build-debug/
+cmake-build-release-coverage/
+cmake-build-debug-coverage/
+
