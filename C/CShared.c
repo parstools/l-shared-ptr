@@ -1,6 +1,12 @@
 #include <stdlib.h>
 #include "CShared.h"
 
+void object_destructor(struct Object *obj) {
+    obj->vmt->destructor(obj);
+    for (int i=0; i<obj->vmt->pointerFieldCount; i++)
+        cshared_release_atomic((struct Object **)((void*)obj+obj->vmt->pointerFieldDeltas[i]));
+}
+
 void cshared_init_elem(struct Object** pp, struct Object* p) {
     p->use_count = 1;
     *pp = p;
@@ -19,6 +25,7 @@ void cshared_release_single(struct Object** pp) {
     if (--p->use_count == 0)
     {
         *pp = NULL;
+        object_destructor(p);
         free(p);
     }
 }
@@ -29,6 +36,7 @@ void cshared_release_atomic(struct Object** pp)  {
     // Be race-detector-friendly.  For more info see bits/c++config.
     if (__atomic_fetch_add(&p->use_count, -1, __ATOMIC_ACQ_REL) == 1) {
         *pp = NULL;
+        object_destructor(p);
         free(p);
     }
 }
