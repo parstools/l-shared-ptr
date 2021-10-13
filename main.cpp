@@ -1,5 +1,6 @@
 #include <iostream>
 #include "LShared.h"
+#include "tree.h"
 
 using namespace std;
 
@@ -16,15 +17,12 @@ struct Elem1: public Object {
 };
 
 static Elem1* make3nonCyclic() {
-    Elem1 *elem = new Elem1("A");
-    Elem1* A;
-    lshared_init_elem((Object**)&A, elem);
-    elem = new Elem1("B");
-    Elem1* B;
-    lshared_init_elem((Object**)&B, elem);
-    elem = new Elem1("C");
-    Elem1* C;
-    lshared_init_elem((Object**)&C, elem);
+    Elem1 *A = new Elem1("A");
+    lshared_init_elem(A);
+    Elem1* B = new Elem1("B");
+    lshared_init_elem(B);
+    Elem1* C = new Elem1("C");
+    lshared_init_elem(C);
     lshared_assign((Object**)&A->next, (Object**)&B);
     lshared_assign((Object**)&B->next, (Object**)&C);
     lshared_release_atomic((Object**)&B);
@@ -42,5 +40,6 @@ static void test2() {
 
 int main() {
     test2();
+    //testTree();
     return 0;
 }

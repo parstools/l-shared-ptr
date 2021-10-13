@@ -4,6 +4,11 @@ void lshared_init_elem(Object** pp, Object* p) {
     *pp = p;
 }
 
+void lshared_init_elem(Object* p) {
+    p->use_count = 1;
+}
+
+
 void lshared_add_ref_single(Object* p) {
     ++p->use_count;
 }
