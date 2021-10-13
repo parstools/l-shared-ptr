@@ -1,3 +1,4 @@
+#include <cassert>
 #include "LShared.h"
 void lshared_init_elem(Object** pp, Object* p) {
     p->use_count = 1;
@@ -70,10 +71,11 @@ void lshared_init_other(Object** pp, Object*__r) {
     *pp = sc;
 }
 
-void lshared_assign(Object** pp, Object** pr) {
-    Object*__tmp = *pr;
+void lshared_assign(Object** pp, Object* p) {
+    assert(pp);
+    Object*__tmp = p;
     if (__tmp != *pp) {
-        if (__tmp != 0)
+        if (__tmp != nullptr)
             lshared_add_ref_atomic(__tmp);
         lshared_release_atomic(pp);
         *pp = __tmp;

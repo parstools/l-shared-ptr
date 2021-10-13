@@ -15,6 +15,6 @@ struct Object {
 
 void lshared_release_atomic(struct Object** pp);
 void lshared_init_elem(Object* p);
-void lshared_assign(struct Object** pp, struct Object** pr);
+void lshared_assign(struct Object** pp, Object* p);
 
 #endif //MYSMARTPTR_LSHARED_H

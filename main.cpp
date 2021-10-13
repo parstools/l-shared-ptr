@@ -23,8 +23,8 @@ static Elem1* make3nonCyclic() {
     lshared_init_elem(B);
     Elem1* C = new Elem1("C");
     lshared_init_elem(C);
-    lshared_assign((Object**)&A->next, (Object**)&B);
-    lshared_assign((Object**)&B->next, (Object**)&C);
+    lshared_assign((Object**)&A->next, B);
+    lshared_assign((Object**)&B->next, C);
     lshared_release_atomic((Object**)&B);
     lshared_release_atomic((Object**)&C);
     return A;
@@ -33,7 +33,7 @@ static Elem1* make3nonCyclic() {
 static void test2() {
     //non cyclic list of three
     Elem1* head = make3nonCyclic();
-    lshared_assign((Object**)&head, (Object**)&head->next);
+    lshared_assign((Object**)&head, head->next);
     cout << "elem A should be deleted" << endl;
     lshared_release_atomic((Object**)&head);
 }
