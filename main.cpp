@@ -39,7 +39,7 @@ static void test2() {
 }
 
 int main() {
-    test2();
-    //testTree();
+    //test2();
+    testTree();
     return 0;
 }
