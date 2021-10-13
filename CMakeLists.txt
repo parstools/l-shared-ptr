@@ -3,4 +3,4 @@ project(l_shared_ptr)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(l_shared_ptr main.cpp LShared.cpp)
+add_executable(l_shared_ptr main.cpp LShared.cpp tree.cpp tree.h)
