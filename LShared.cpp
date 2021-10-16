@@ -71,7 +71,7 @@ void lshared_init_other(Object** pp, Object*__r) {
     *pp = sc;
 }
 
-void lshared_assign(Object** pp, Object* p) {
+void    lshared_assign(Object** pp, Object* p) {
     assert(pp);
     Object*__tmp = p;
     if (__tmp != *pp) {
@@ -80,6 +80,11 @@ void lshared_assign(Object** pp, Object* p) {
         lshared_release_atomic(pp);
         *pp = __tmp;
     }
+}
+
+void lweak_assign(Object** pp, Object* p) {
+    assert(pp);
+    *pp = p;
 }
 
 void lshared_swap(Object** pp, Object** pr) {

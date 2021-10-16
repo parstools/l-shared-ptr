@@ -1,13 +1,10 @@
 #ifndef L_SHARED_PTR_TREE_H
 #define L_SHARED_PTR_TREE_H
 
-#include <iostream>
 #include "LShared.h"
 
-using namespace std;
-
 struct Node: public Object {
-    Node* parent; //shared instead of weak in this case does not matter, only time consuming
+    Node* parent;
     Node(Node* parent);
     static int countId;
     int id;

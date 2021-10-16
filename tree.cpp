@@ -3,14 +3,15 @@
 //
 
 #include "tree.h"
+#include <iostream>
+using namespace std;
 
 int Node::countId = 0;
 
 Node::Node(Node* parent) {
     id = countId;
     countId++;
-    this->parent = parent;
-    //lshared_assign((Object**)&this->parent, (Object*)parent); weak!
+    lweak_assign((Object**)&this->parent, (Object*)parent); //weak!
     if (parent!=nullptr)
         depth = parent->depth+1;
     left = right = nullptr;
@@ -18,7 +19,7 @@ Node::Node(Node* parent) {
 
 Node::~Node() {
     cout << "delete Node depth=" << depth << " id="<< id <<endl;
-    //lshared_release_atomic((Object**)&parent);weak!
+    //lshared_release_atomic((Object**)&parent);//weak!
     lshared_release_atomic((Object**)&left);
     lshared_release_atomic((Object**)&right);
 }
@@ -43,5 +44,9 @@ void testTree() {
     Node *root = new Node(nullptr);
     lshared_init_elem(root);
     makeTree(root, 5);
-    lshared_release_atomic((Object**)&root);
+    Node *keep;
+    lshared_assign((Object**)&keep, root->left->left->parent);//must be shared, not weak, although is copy of weak!
+    lshared_assign((Object**)&root, nullptr);
+    cout << "keep" << endl;
+    lshared_release_atomic((Object**)&keep);
 }
