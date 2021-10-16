@@ -53,6 +53,35 @@ struct Object* make3nonCyclic() {
     return A;
 }
 
+
+struct Object* makeLongList() {
+    struct Elem *elem = malloc(sizeof(struct Elem));
+    constructor(elem);
+    strcpy(elem->cargo, "A");
+    struct Object* A;
+    cshared_init_elem(&A, (struct Object*)elem);
+
+    elem = malloc(sizeof(struct Elem));
+    constructor(elem);
+    strcpy(elem->cargo, "B");
+    struct Object* B;
+    cshared_init_elem(&B, (struct Object*)elem);
+
+    elem = malloc(sizeof(struct Elem));
+    constructor(elem);
+    strcpy(elem->cargo, "C");
+    struct Object* C;
+    cshared_init_elem(&C, (struct Object*)elem);
+
+    struct Object* p = A;
+    cshared_assign(&((struct Elem *) p)->next, &B);
+    p = B;
+    cshared_assign(&((struct Elem *) p)->next, &C);
+    cshared_release_atomic(&B);
+    cshared_release_atomic(&C);
+    return A;
+}
+
 static void test2() {
     //non cyclic list of three
     struct Object* head = make3nonCyclic();
